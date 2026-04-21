@@ -1,0 +1,77 @@
+import axios from "axios";
+
+const API_URL = "http://localhost:5000/api/v1";
+
+// 1) create instance
+const api = axios.create({
+  baseURL: API_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+console.log(api);
+
+/* 
+CHANGE THESE CODE BASE ON THE API
+
+// اضافه کردن token به هر درخواست
+api.interceptors.request.use((config) => {
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// Auth APIs
+export const authAPI = {
+  register: (data) => api.post('/auth/register', data),
+  login: (data) => api.post('/auth/login', data),
+  getMe: () => api.get('/auth/me'),
+};
+
+// Teams APIs
+export const teamsAPI = {
+  create: (data) => api.post('/teams', data),
+  getAll: () => api.get('/teams'),
+  getById: (id) => api.get(`/teams/${id}`),
+  addMember: (teamId, userId, role) => api.post(`/teams/${teamId}/members`, { userId, role }),
+  removeMember: (teamId, userId) => api.delete(`/teams/${teamId}/members/${userId}`),
+  updateMemberRole: (teamId, userId, role) => api.put(`/teams/${teamId}/members/${userId}`, { role }),
+};
+
+// Projects APIs
+export const projectsAPI = {
+  create: (data) => api.post('/projects', data),
+  getAll: (teamId) => api.get(`/projects?teamId=${teamId}`),
+  getById: (id) => api.get(`/projects/${id}`),
+  update: (id, data) => api.put(`/projects/${id}`, data),
+  delete: (id) => api.delete(`/projects/${id}`),
+  addStage: (projectId, stage) => api.post(`/projects/${projectId}/stages`, stage),
+};
+
+// Tasks APIs
+export const tasksAPI = {
+  create: (data) => api.post('/tasks', data),
+  getByProject: (projectId) => api.get(`/tasks?projectId=${projectId}`),
+  updateStatus: (taskId, status) => api.put(`/tasks/${taskId}/status`, { status }),
+  assign: (taskId, userId) => api.put(`/tasks/${taskId}/assign`, { userId }),
+};
+
+// Chat APIs
+export const chatAPI = {
+  getMessages: (projectId) => api.get(`/chat/${projectId}`),
+  sendMessage: (data) => api.post('/chat', data),
+};
+
+// Notes APIs
+export const notesAPI = {
+  getAll: () => api.get('/notes'),
+  create: (data) => api.post('/notes', data),
+  update: (id, data) => api.put(`/notes/${id}`, data),
+  delete: (id) => api.delete(`/notes/${id}`),
+};
+
+
+*/
+export default api;
