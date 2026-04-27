@@ -6,7 +6,7 @@ import Logo from "./Logo";
 
 export default function Navbar() {
   return (
-    <div className="navbar space-x-4  bg-base-100 shadow-md justify-between sticky top-0 z-50">
+    <header className="navbar space-x-4  bg-base-100 shadow-md justify-between sticky top-0 z-50">
       {/* LOGO IN DESKTOP SIZE AND ALSO MENU BUTTON IN THE MOBILE SIZE */}
       <div className="navbar-start w-auto  lg:justify-start lg:w-[50%]">
         {/* HAMBERGURE BUTTON*/}
@@ -71,6 +71,6 @@ export default function Navbar() {
           </svg>
         </Link>
       </div>
-    </div>
+    </header>
   );
 }

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { vazirMedium } from "./fonts";
 
 export default function Home() {
@@ -15,7 +16,9 @@ export default function Home() {
               پلتفرمی یکپارچه برای تیم‌های حرفه‌ای. از تشکیل تیم تا گزارش‌گیری،
               همه چیز در دستان شماست.
             </p>
-            <button className="btn btn-primary btn-lg">شروع</button>
+            <Link href="/dashboard" className="btn btn-primary btn-lg">
+              شروع
+            </Link>
           </div>
         </div>
       </section>
