@@ -9,7 +9,6 @@ const api = axios.create({
     "Content-Type": "application/json",
   },
 });
-console.log(api);
 
 /* 
 CHANGE THESE CODE BASE ON THE API

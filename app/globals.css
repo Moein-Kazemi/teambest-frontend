@@ -1,27 +1,42 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* FONTS */
+  /* --font-sans: var(--vazir-light), ui-sans-serif, system-ui, sans-serif; */
+  /* تعریف کلاس‌های کمکی برای Bold و Light
+  --font-vazir-light: "Vazirmatn", sans-serif; */
+  --font-vazir-bold: "Vazir", sans-serif;
+  --font-bold: var(--font-vazir-bold);
+  /* اگر می‌خواهید کلاس‌های معناداری داشته باشید، می‌توانید این‌ها را هم اضافه کنید */
+  /* --font-bold: var(--font-vazir-bold);
+  --font-light: var(--font-vazir-light); */
+
+  --font-vazir-bold: var(--vazir-bold);
+  --font-vazir-medium: var(--vazir-medium);
+  --font-vazir-light: var(--vazir-light);
+
+  /* COLORS */
+  --color-primary: #2563eb;
+  --color-primary-content: #ffffff;
+
+  --color-secondary: #f000b8;
+  --color-secondary-content: #ffffff;
+
+  --color-accent: #00b8d4;
+  --color-accent-content: #ffffff;
+
+  --color-neutral: #3d4451;
+  --color-neutral-content: #ffffff;
+
+  --color-base-100: #ffffff;
+  --color-base-200: #f9fafb;
+  --color-base-300: #e5e7eb;
+  --color-base-content: #1f2937;
+
+  --color-info: #3abff8;
+  --color-success: #36d399;
+  --color-warning: #fbbf24;
+  --color-error: #f87171;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-}
+@plugin "daisyui";
