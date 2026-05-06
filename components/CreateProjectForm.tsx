@@ -5,7 +5,7 @@ import { createProject } from "@/lib/projectActions";
 import { useState } from "react";
 
 // TYPE CHEKING
-import { IStage } from "@/interfaces/projectInterfaces";
+import { IStage, ITaskAssignment } from "@/interfaces/projectInterfaces";
 
 // ==================== Component ====================
 export default function CreateProjectForm() {
@@ -24,8 +24,8 @@ export default function CreateProjectForm() {
 
   // ADD HIDDEN IDS TO FORM
   const ids = {
-    teamId: "team123",
-    ownerId: "owner1234",
+    teamId: "69df5fc47621324e98a37b93",
+    ownerId: "69df5fc47621324e98a37b37",
   };
   const createProjectWithIds = createProject.bind(null, ids);
 
@@ -100,7 +100,7 @@ export default function CreateProjectForm() {
   const updateTask = (
     stageIndex: number,
     taskIndex: number,
-    field: keyof TaskAssignment,
+    field: keyof ITaskAssignment,
     value: string,
   ) => {
     setStages(
