@@ -1,12 +1,14 @@
+"use client";
 import { vazirBold } from "@/app/fonts";
 import DropdownLinks from "@/components/DropdownLinks";
 import HeaderLinks from "@/components/HeaderLinks";
 import Link from "next/link";
 import Logo from "./Logo";
 
+
 export default function Navbar() {
   return (
-    <header className="navbar space-x-4  bg-base-100 shadow-md justify-between sticky top-0 z-50">
+    <header className="navbar space-x-4  bg-base-100 shadow-md justify-between sticky top-0 z-51">
       {/* LOGO IN DESKTOP SIZE AND ALSO MENU BUTTON IN THE MOBILE SIZE */}
       <div className="navbar-start w-auto  lg:justify-start lg:w-[50%]">
         {/* HAMBERGURE BUTTON*/}

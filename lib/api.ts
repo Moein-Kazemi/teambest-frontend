@@ -10,6 +10,15 @@ const api = axios.create({
   },
 });
 
+// PROJECTS API
+export const projectsAPI = {
+  // create: (data) => api.post('/projects', data),
+  getAll: async (teamId: string) => await api.get(`/projects?teamId=${teamId}`),
+  getById: async (id: string) => await api.get(`/projects/${id}`),
+  // update: (id, data) => api.put(`/projects/${id}`, data),
+  // addStage: (projectId, stage) => api.post(`/projects/${projectId}/stages`, stage),
+};
+
 /* 
 CHANGE THESE CODE BASE ON THE API
 

@@ -11,13 +11,13 @@ export default function DropdownLinks() {
         <Link href="/">خانه</Link>
       </li>
       <li>
-        <Link href="/about">درباره ما</Link>
+        <Link href="/dashboard">داشبورد</Link>
       </li>
       <li>
-        <Link href="/services">خدمات</Link>
+        <Link href="/projects">پروژه ها</Link>
       </li>
       <li>
-        <Link href="/contact">تماس با ما</Link>
+        <Link href="/tasks">وظایف</Link>
       </li>
     </ul>
   );

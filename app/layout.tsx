@@ -3,6 +3,7 @@ import "@/app/globals.css" with { type: "css" };
 import { vazirLight } from "./fonts";
 import Navbar from "@/ui/Navbar";
 
+
 export const metadata: Metadata = {
   title: {
     template: "TeamBest / %s",
