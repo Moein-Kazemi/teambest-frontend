@@ -19,6 +19,13 @@ export const projectsAPI = {
   // addStage: (projectId, stage) => api.post(`/projects/${projectId}/stages`, stage),
 };
 
+//  TASKS API
+
+export const tasksApi = {
+  getAllMyTasks: async (assigneeId: string) =>
+    await api.get(`/tasks?assigneeTo.assigneeId=${assigneeId}`),
+};
+
 /* 
 CHANGE THESE CODE BASE ON THE API
 
