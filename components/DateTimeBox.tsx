@@ -59,7 +59,6 @@ export default function DateTimeBox() {
   }, []);
 
   return (
-    // <div className="flex justify-center items-center min-h-[50vh] p-4">
     <div className="card w-full bg-base-100 shadow-xl border border-base-300 col-span-12 md:col-span-6">
       <div className="card-body items-center text-center">
         {/* CALENDER ICON */}
@@ -101,6 +100,5 @@ export default function DateTimeBox() {
         <p className="text-sm text-base-content/50 mt-2">زمان فعلی سیستم</p>
       </div>
     </div>
-    // </div>
   );
 }

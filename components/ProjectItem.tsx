@@ -11,9 +11,7 @@ function ProjectItem({ project }: { project: IProject }) {
     >
       <div className="card-body max-w-full flex flex-col justify-center p-2">
         {/* Title */}
-        <h2 className="card-title text-lg mb-2 text-primary/">
-          {project.name}
-        </h2>
+        <h2 className="card-title text-lg mb-2 ">{project.name}</h2>
 
         {/* description */}
         <p className="text-base-content/70 text-sm leading-relaxed mb-4 truncate w-full">

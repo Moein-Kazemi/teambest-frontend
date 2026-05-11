@@ -78,6 +78,7 @@ export default function CreateProjectForm() {
     if (!result?.success) {
       // if the project cant be create in the db
       setServerError(result?.error || "خطای ناشناخته");
+      // setServerError(result.error || "");
     }
   };
 

@@ -57,31 +57,35 @@ export async function createProject(
       tasksData,
     };
 
+    // : {
+    //   status: string;
+    //   data: { project: IProject };
+    //   message?: string;
+    // }
     // SEND THE REQUEST TO API
-    const createProjectRespones: {
-      status: string;
-      data: { project: IProject };
-    } = await api.post("/projects", data);
-
-    if (createProjectRespones.status === "success") {
+    const createProjectRespones = await api.post("/projects", data);
+    console.log(`project ${createProjectRespones}`);
+    if (createProjectRespones.data.status === "success") {
       revalidatePath("/projects");
       redirect("/projects");
     }
 
-    if (createProjectRespones.status === "fail") {
-      return { success: false, error: "به دلایلی پروژه ساخته نشد." };
+    if (createProjectRespones.data.status === "fail") {
+      throw new Error(createProjectRespones.data.message);
     }
-  } catch (err) {
-    if (err instanceof Error) {
-      return {
-        success: false,
-        error: err.message,
-      };
-    } else {
-      return {
-        success: false,
-        error: "حطای ناشناخته ای در زمان ایجاد پروژه به وجود آمد.",
-      };
-    }
+  } catch (err: any) {
+    return { success: false, error: err.data.message };
+    // if (err instanceof Error) {
+    //   // console.log(err);
+    //   return {
+    //     success: false,
+    //     error: err.message,
+    //   };
+    // } else {
+    //   return {
+    //     success: false,
+    //     error: "حطای ناشناخته ای در زمان ایجاد پروژه به وجود آمد.",
+    //   };
+    // }
   }
 }

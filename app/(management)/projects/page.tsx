@@ -1,20 +1,18 @@
-import { vazirMedium } from "@/app/fonts";
 import DotsLoader from "@/components/DotsLoader";
+import HeadingOne from "@/components/HeadingOne";
 import ProjectsList from "@/components/ProjectsList";
 
 import { Suspense } from "react";
 
 async function Page() {
   return (
-    <>
-      <h1 className={`text-3xl ${vazirMedium.className} pb-8`}>
-        لیست پروژه ها
-      </h1>
+    <div className="space-y-8 text-center">
+      <HeadingOne data="لیست پروژه ها" />
 
       <Suspense fallback={<DotsLoader />}>
         <ProjectsList />
       </Suspense>
-    </>
+    </div>
   );
 }
 
