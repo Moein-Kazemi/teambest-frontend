@@ -3,7 +3,7 @@ import { Eye } from "lucide-react";
 import Link from "next/link";
 import DeleteProjectModal from "./DeleteProjectModal";
 
-function ProjectItem({ project }: { project: IProject }) {
+function ProjectCard({ project }: { project: IProject }) {
   return (
     <li
       key={project._id}
@@ -20,7 +20,7 @@ function ProjectItem({ project }: { project: IProject }) {
       </div>
 
       {/* detail link */}
-      <div className="flex gap-2">
+      <div className="flex sm:flex-col md:flex-row gap-2">
         <Link
           href={`/projects/${project._id}`}
           className="btn btn-primary btn-sm"
@@ -37,4 +37,4 @@ function ProjectItem({ project }: { project: IProject }) {
   );
 }
 
-export default ProjectItem;
+export default ProjectCard;

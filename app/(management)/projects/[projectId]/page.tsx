@@ -7,7 +7,7 @@ import StagesList from "@/components/StagesList";
 
 async function Page({ params }: { params: { projectId: string } }) {
   const res = await projectsAPI.getById(params.projectId);
-  const project: IProject = res.data.data.project;
+  const project: IProject = res.data.project;
 
   return (
     <div className="space-y-4 w-full">

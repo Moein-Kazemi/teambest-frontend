@@ -4,7 +4,7 @@ import TaskCard from "./TaskCard";
 
 async function MyTasksList() {
   const response = await tasksApi.getAllMyTasks("69df5fc47621324e98a37b52");
-  const myTasks: ITask[] = response.data.data.tasks;
+  const myTasks: ITask[] = response.data.tasks;
 
   return (
     <ul className="space-y-4">

@@ -1,21 +1,19 @@
 "use client";
 import { vazirBold } from "@/app/fonts";
-import { projectsAPI } from "@/lib/api";
+
 import { deleteProject } from "@/lib/projectActions";
 import { Trash } from "lucide-react";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 
 export default function DeleteProjectModal({
   projectId,
 }: {
   projectId: string;
 }) {
-  const [isOpen, setIsOpen] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   // باز کردن مودال
   const openModal = () => {
-    setIsOpen(true);
     if (dialogRef.current) {
       dialogRef.current.showModal();
     }
@@ -23,7 +21,7 @@ export default function DeleteProjectModal({
 
   // بستن مودال
   const closeModal = () => {
-    setIsOpen(false);
+    // setIsOpen(false);
     if (dialogRef.current) {
       dialogRef.current.close();
     }

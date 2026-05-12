@@ -1,6 +1,18 @@
+import { IProject } from "@/interfaces/projectInterfaces";
 import axios from "axios";
 
+import { unstable_cache } from "next/cache";
+
 const API_URL = "http://localhost:5000/api/v1";
+
+// TYPE CHECKER
+interface ProjectsResponse {
+  status: string;
+  results: number;
+  data: {
+    projects: IProject[];
+  };
+}
 
 // 1) create instance
 const api = axios.create({
@@ -13,17 +25,60 @@ const api = axios.create({
 // PROJECTS API
 export const projectsAPI = {
   // create: (data) => api.post('/projects', data),
-  getAll: async (teamId: string) => await api.get(`/projects?teamId=${teamId}`),
-  getById: async (id: string) => await api.get(`/projects/${id}`),
+  // getProjectsByTeamId: async (teamId: string) =>
+  //   await api.get(`/projects?teamId=${teamId}`),
+
+  getProjectsByTeam: unstable_cache(
+    async (teamId: string) => {
+      try {
+        const { data } = await api.get<ProjectsResponse>(
+          `/projects?teamId=${teamId}`,
+        );
+        return data;
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+        throw error;
+      }
+    },
+    ["projects-by-team"],
+    {
+      revalidate: 3600, // cache for one hour
+      tags: ["projects"], // for manualy delete cache
+    },
+  ),
+
+  getById: async (id: string) => {
+    try {
+      const { data } = await api.get(`/projects/${id}`);
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  },
   // update: (id, data) => api.put(`/projects/${id}`, data),
   // addStage: (projectId, stage) => api.post(`/projects/${projectId}/stages`, stage),
 };
 
 //  TASKS API
-
 export const tasksApi = {
-  getAllMyTasks: async (assigneeId: string) =>
-    await api.get(`/tasks?assigneeTo.assigneeId=${assigneeId}`),
+  getAllMyTasks: async (assigneeId: string) => {
+    try {
+      const { data } = await api.get(
+        `/tasks?assigneeTo.assigneeId=${assigneeId}`,
+      );
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  getTaskById: async (id: string) => {
+    try {
+      const { data } = await api.get(`/tasks/${id}`);
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  },
 };
 
 /* 

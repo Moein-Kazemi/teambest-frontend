@@ -1,15 +1,19 @@
 import { IProject } from "@/interfaces/projectInterfaces";
 import { projectsAPI } from "@/lib/api";
 
-import ProjectItem from "./ProjectItem";
 import Link from "next/link";
+import ProjectCard from "./ProjectCard";
 
 async function ProjectsList() {
   // the teamId must be cahnged in the future base on the User.teamId
-  const response = await projectsAPI.getAll("69df5fc47621324e98a37b93");
-  const projects: IProject[] = response.data.data.projects;
+  const response = await projectsAPI.getProjectsByTeam(
+    "69df5fc47621324e98a37b93",
+  );
+
+  const projects: IProject[] = response.data.projects;
 
   // IF THE PROJECT DOES NOT EXIST YET.
+
   if (projects.length === 0)
     return (
       <div className="text-center space-y-4">
@@ -24,7 +28,7 @@ async function ProjectsList() {
     <>
       <ul className="space-y-4">
         {projects.map((project) => {
-          return <ProjectItem key={project._id} project={project} />;
+          return <ProjectCard key={project._id} project={project} />;
         })}
       </ul>
       <Link

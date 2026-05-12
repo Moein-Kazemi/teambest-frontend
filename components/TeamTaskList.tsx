@@ -1,0 +1,45 @@
+import { IProject } from "@/interfaces/projectInterfaces";
+import { ITask } from "@/interfaces/tasksInterfaces";
+import { projectsAPI, tasksApi } from "@/lib/api";
+import TaskCard from "./TaskCard";
+
+async function TeamTaskList() {
+  const teamTasksIds: string[] = [];
+  const teamTasks: ITask[] = [];
+
+  // fetch projects
+  const response = await projectsAPI.getProjectsByTeam(
+    "69df5fc47621324e98a37b93",
+  );
+  const projects: IProject[] = response.data.projects;
+
+  // push all temaTaskId(except my task) to the teamTasksIds array
+  projects.forEach((project) =>
+    project.stages.forEach((stage) =>
+      stage.taskAssignments.forEach((task) => {
+        if (typeof task.taskId === "string") {
+          // filter my task base on the user.id and id below must be cahnge in the future
+          if (task.assigneeId !== "69df5fc47621324e98a37b52")
+            teamTasksIds.push(task.taskId);
+        }
+      }),
+    ),
+  );
+
+  //   fetch task base on the taskId
+  for (const taskId of teamTasksIds) {
+    const response = await tasksApi.getTaskById(taskId);
+    const task = response.data.task;
+    teamTasks.push(task);
+  }
+
+  return (
+    <ul className="space-y-4">
+      {teamTasks.map((task) => (
+        <TaskCard task={task} key={task._id} />
+      ))}
+    </ul>
+  );
+}
+
+export default TeamTaskList;

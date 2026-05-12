@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import api from "./api";
 import { IProject } from "@/interfaces/projectInterfaces";
 import { redirect } from "next/navigation";
@@ -8,6 +8,7 @@ import { projectSchema } from "@/validation/projectValidationSchema";
 
 export async function deleteProject(projectId: string) {
   await api.delete(`/projects/${projectId}`);
+  revalidateTag("projects");
   revalidatePath("/projects");
 }
 
@@ -66,6 +67,7 @@ export async function createProject(
     const createProjectRespones = await api.post("/projects", data);
     console.log(`project ${createProjectRespones}`);
     if (createProjectRespones.data.status === "success") {
+      revalidateTag("projects");
       revalidatePath("/projects");
       redirect("/projects");
     }
