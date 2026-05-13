@@ -24,10 +24,6 @@ const api = axios.create({
 
 // PROJECTS API
 export const projectsAPI = {
-  // create: (data) => api.post('/projects', data),
-  // getProjectsByTeamId: async (teamId: string) =>
-  //   await api.get(`/projects?teamId=${teamId}`),
-
   getProjectsByTeam: unstable_cache(
     async (teamId: string) => {
       try {
@@ -60,7 +56,7 @@ export const projectsAPI = {
 };
 
 //  TASKS API
-export const tasksApi = {
+export const tasksAPI = {
   getAllMyTasks: async (assigneeId: string) => {
     try {
       const { data } = await api.get(

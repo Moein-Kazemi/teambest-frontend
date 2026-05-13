@@ -1,6 +1,6 @@
 import { IProject } from "@/interfaces/projectInterfaces";
 import { ITask } from "@/interfaces/tasksInterfaces";
-import { projectsAPI, tasksApi } from "@/lib/api";
+import { projectsAPI, tasksAPI } from "@/lib/api";
 import TaskCard from "./TaskCard";
 
 async function TeamTaskList() {
@@ -28,9 +28,17 @@ async function TeamTaskList() {
 
   //   fetch task base on the taskId
   for (const taskId of teamTasksIds) {
-    const response = await tasksApi.getTaskById(taskId);
+    const response = await tasksAPI.getTaskById(taskId);
     const task = response.data.task;
     teamTasks.push(task);
+  }
+
+  if (projects.length === 0) {
+    return (
+      <div className="text-center text-primary">
+        هنوز وظیفه ای برای اعضای تیم شما تعریف نشده است...
+      </div>
+    );
   }
 
   return (

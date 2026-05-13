@@ -3,7 +3,7 @@
 import { revalidatePath, revalidateTag } from "next/cache";
 import api from "./api";
 import { IProject } from "@/interfaces/projectInterfaces";
-import { redirect } from "next/navigation";
+
 import { projectSchema } from "@/validation/projectValidationSchema";
 
 export async function deleteProject(projectId: string) {
@@ -20,7 +20,7 @@ export async function createProject(
   data?: IProject;
   error?: string;
   errors?: { field: string; message: string }[];
-} | void> {
+}> {
   try {
     const tasksData = [];
 
@@ -58,36 +58,21 @@ export async function createProject(
       tasksData,
     };
 
-    // : {
-    //   status: string;
-    //   data: { project: IProject };
-    //   message?: string;
-    // }
     // SEND THE REQUEST TO API
-    const createProjectRespones = await api.post("/projects", data);
-    console.log(`project ${createProjectRespones}`);
-    if (createProjectRespones.data.status === "success") {
-      revalidateTag("projects");
-      revalidatePath("/projects");
-      redirect("/projects");
+    const { data: createProjectResponse } = await api.post("/projects", data);
+
+    if (createProjectResponse.status === "fail") {
+      throw new Error(createProjectResponse.data.message);
     }
 
-    if (createProjectRespones.data.status === "fail") {
-      throw new Error(createProjectRespones.data.message);
+    revalidateTag("projects");
+    revalidatePath("/projects");
+    return { success: true };
+  } catch (err) {
+    if (err instanceof Error) {
+      return { success: false, error: err.message };
+    } else {
+      return { success: false, error: "پروژه به دلایلی ایجاد نشد." };
     }
-  } catch (err: any) {
-    return { success: false, error: err.data.message };
-    // if (err instanceof Error) {
-    //   // console.log(err);
-    //   return {
-    //     success: false,
-    //     error: err.message,
-    //   };
-    // } else {
-    //   return {
-    //     success: false,
-    //     error: "حطای ناشناخته ای در زمان ایجاد پروژه به وجود آمد.",
-    //   };
-    // }
   }
 }

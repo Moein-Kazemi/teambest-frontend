@@ -1,9 +1,10 @@
 import { ITask } from "@/interfaces/tasksInterfaces";
-import Image from "next/image";
-import avatar from "@/public/images/moein.JPG";
 import { vazirMedium } from "@/app/fonts";
 import { Eye, Play, Trash } from "lucide-react";
 import StatusBadge from "./StatusBadge";
+import PriorityIndicator from "./PriorityIndicator";
+import Link from "next/link";
+import UserBox from "./UserBox";
 
 function TaskCard({ task }: { task: ITask }) {
   return (
@@ -17,38 +18,23 @@ function TaskCard({ task }: { task: ITask }) {
         </h3>
         <div className="flex justify-center items-center gap-3 sm:justify-start">
           <span className="font-medium">اولویت {task.priority}</span>
-          <div className="indicator">
-            <div className="w-4 h-4 rounded-full bg-success shadow-sm"></div>
-          </div>
+          <PriorityIndicator priority={task.priority as string} />
         </div>
       </div>
-
       {/* USER AVATAR AND RESPONSIBLE TO DO TASK  */}
       <div className="flex flex-col min-[840px]:flex-row p-2 min-w-50 justify-center items-center gap-2  ">
-        {/* avatar */}
-        <div className="flex justify-center items-center gap-2">
-          <div className="avatar placeholder">
-            <div className="bg-primary text-primary-content rounded-full w-10">
-              <Image src={avatar} alt="avarar-image" />
-            </div>
-          </div>
-          <div className="text-center">
-            <div className="text-xs text-base-content/50">مسئول انجام</div>
-            <div className={vazirMedium.className}>
-              {task?.assigneeTo?.assigneeName}
-            </div>
-          </div>
-        </div>
-
+        <UserBox name={task?.assigneeTo?.assigneeName as string} />
         <StatusBadge status={task.status as string} />
       </div>
-
       {/* BUTTON SECTIONS  */}
       <div className="flex sm:flex-col md:flex-row p-2 min-w-50 gap-3">
-        <button className="btn btn-outline btn-info btn-sm">
+        <Link
+          href={`/tasks/${task._id}`}
+          className="btn btn-outline btn-info btn-sm"
+        >
           <Eye size={16} />
           جزئیات
-        </button>
+        </Link>
 
         <button className="btn btn-primary btn-sm">
           <Play size={16} />

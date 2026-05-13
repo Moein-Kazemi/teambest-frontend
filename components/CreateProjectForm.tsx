@@ -12,9 +12,11 @@ import {
   projectSchema,
 } from "@/validation/projectValidationSchema";
 import StageFields from "./StageFields";
+import { useRouter } from "next/navigation";
 
 // ==================== Component ====================
 export default function CreateProjectForm() {
+  const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
   const [serverSuccess, setServerSuccess] = useState<string | null>(null);
 
@@ -26,7 +28,7 @@ export default function CreateProjectForm() {
     formState: { errors, isSubmitting, isValid },
   } = useForm<ProjectFormData>({
     resolver: zodResolver(projectSchema),
-    mode: "onBlur",
+    mode: "onChange",
     // reValidateMode: "onChange",
     defaultValues: {
       name: "",
@@ -79,6 +81,8 @@ export default function CreateProjectForm() {
       // if the project cant be create in the db
       setServerError(result?.error || "خطای ناشناخته");
       // setServerError(result.error || "");
+    } else if (result?.success) {
+      router.replace("/projects");
     }
   };
 
@@ -122,7 +126,6 @@ export default function CreateProjectForm() {
 
           <div className="relative">
             <textarea
-              // name="description"
               {...register("description")}
               className="textarea border resize-none border-primary/20 outline-primary "
               rows={3}

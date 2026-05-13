@@ -81,6 +81,7 @@ export default function StageFields({
           <input
             type="number"
             {...register(`stages.${stageIndex}.order`, { valueAsNumber: true })}
+            disabled={true}
             className="input border border-primary/20 outline-primary input-sm"
             min="1"
           />

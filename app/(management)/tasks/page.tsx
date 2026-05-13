@@ -1,4 +1,5 @@
 import { vazirMedium } from "@/app/fonts";
+
 import DotsLoader from "@/components/DotsLoader";
 import HeadingOne from "@/components/HeadingOne";
 import MyTasksList from "@/components/MyTasksList";
