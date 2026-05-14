@@ -13,6 +13,18 @@ import {
 } from "@/validation/projectValidationSchema";
 import StageFields from "./StageFields";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+const initialFormValue = {
+  name: "",
+  description: "",
+  stages: [
+    {
+      name: "",
+      order: 1,
+      taskAssignments: [{ taskTitle: "", assigneeId: "", assigneeName: "" }],
+    },
+  ],
+};
 
 // ==================== Component ====================
 export default function CreateProjectForm() {
@@ -30,19 +42,7 @@ export default function CreateProjectForm() {
     resolver: zodResolver(projectSchema),
     mode: "onChange",
     // reValidateMode: "onChange",
-    defaultValues: {
-      name: "",
-      description: "",
-      stages: [
-        {
-          name: "",
-          order: 1,
-          taskAssignments: [
-            { taskTitle: "", assigneeId: "", assigneeName: "" },
-          ],
-        },
-      ],
-    },
+    defaultValues: initialFormValue,
   });
 
   // CONTROL NESTED ARRAY
@@ -54,9 +54,6 @@ export default function CreateProjectForm() {
     control,
     name: "stages",
   });
-
-  // const watchedStages = watch("stages");
-  // console.log(watchedStages);
 
   // ADD HIDDEN IDS TO FORM
   const ids = {
@@ -82,6 +79,7 @@ export default function CreateProjectForm() {
       setServerError(result?.error || "خطای ناشناخته");
       // setServerError(result.error || "");
     } else if (result?.success) {
+      toast.success("پروژه با موفقیت ایجاد شد.");
       router.replace("/projects");
     }
   };
@@ -165,7 +163,7 @@ export default function CreateProjectForm() {
         />
       ))}
 
-      {/* add stages */}
+      {/* ADD STAGE */}
       <button
         type="button"
         onClick={() =>

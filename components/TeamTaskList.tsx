@@ -5,7 +5,7 @@ import TaskCard from "./TaskCard";
 
 async function TeamTaskList() {
   const teamTasksIds: string[] = [];
-  const teamTasks: ITask[] = [];
+  let teamTasks: ITask[] = [];
 
   // fetch projects
   const response = await projectsAPI.getProjectsByTeam(
@@ -30,7 +30,7 @@ async function TeamTaskList() {
   for (const taskId of teamTasksIds) {
     const response = await tasksAPI.getTaskById(taskId);
     const task = response.data.task;
-    teamTasks.push(task);
+    teamTasks.unshift(task);
   }
 
   if (projects.length === 0) {

@@ -1,10 +1,12 @@
 import { ITask } from "@/interfaces/tasksInterfaces";
 import { vazirMedium } from "@/app/fonts";
-import { Eye, Play, Trash } from "lucide-react";
+import { Eye } from "lucide-react";
 import StatusBadge from "./StatusBadge";
 import PriorityIndicator from "./PriorityIndicator";
 import Link from "next/link";
 import UserBox from "./UserBox";
+import DeleteTaskModal from "./DeleteTaskModal";
+import StartTaskButton from "./StartTaskButton";
 
 function TaskCard({ task }: { task: ITask }) {
   return (
@@ -36,15 +38,9 @@ function TaskCard({ task }: { task: ITask }) {
           جزئیات
         </Link>
 
-        <button className="btn btn-primary btn-sm">
-          <Play size={16} />
-          شروع
-        </button>
+        <StartTaskButton taskId={task._id as string} />
 
-        <button className="btn btn-error btn-outline btn-sm">
-          <Trash size={16} />
-          حذف
-        </button>
+        <DeleteTaskModal taskId={task._id as string} />
       </div>
     </li>
   );

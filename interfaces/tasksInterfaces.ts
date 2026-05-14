@@ -2,7 +2,7 @@ export interface IAssignee {
   assigneeId?: string;
   assigneeName?: string;
 }
-export type AssigneeDocument = IAssignee & Document;
+// export type AssigneeDocument = IAssignee & Document;
 
 // TASK PROP AND DOCUMENT
 export interface ITask {
@@ -10,7 +10,7 @@ export interface ITask {
   projectId: string;
   stageId: string;
   title: string;
-  description: string;
+  description?: string;
   assigneeTo: IAssignee;
   status?: "انجام نشده" | "در حال انجام" | "انجام شده";
   priority?: "کم" | "متوسط" | "زیاد" | "خیلی زیاد";

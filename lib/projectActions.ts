@@ -13,13 +13,11 @@ export async function deleteProject(projectId: string) {
 }
 
 export async function createProject(
-  ids: any,
+  ids: { teamId: string; ownerId: string },
   formData: FormData,
 ): Promise<{
   success: boolean;
-  data?: IProject;
   error?: string;
-  errors?: { field: string; message: string }[];
 }> {
   try {
     const tasksData = [];

@@ -28,7 +28,7 @@ export const projectsAPI = {
     async (teamId: string) => {
       try {
         const { data } = await api.get<ProjectsResponse>(
-          `/projects?teamId=${teamId}`,
+          `/projects?teamId=${teamId}&sort=-createdAt`,
         );
         return data;
       } catch (error) {
@@ -60,7 +60,7 @@ export const tasksAPI = {
   getAllMyTasks: async (assigneeId: string) => {
     try {
       const { data } = await api.get(
-        `/tasks?assigneeTo.assigneeId=${assigneeId}`,
+        `/tasks?assigneeTo.assigneeId=${assigneeId}&sort=-createdAt`,
       );
       return data;
     } catch (err) {
