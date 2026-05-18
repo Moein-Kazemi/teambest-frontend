@@ -16,7 +16,7 @@ export default function Home() {
               پلتفرمی یکپارچه برای تیم‌های حرفه‌ای. از تشکیل تیم تا گزارش‌گیری،
               همه چیز در دستان شماست.
             </p>
-            <p className="text-lg mb-8">طراحی و توسعه مهندس معین کاظمی</p>
+            <p className="text-lg mb-8">طراحی و توسعه معین کاظمی</p>
             <Link href="/dashboard" className="btn btn-primary btn-lg">
               شروع
             </Link>

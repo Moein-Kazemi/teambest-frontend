@@ -15,8 +15,16 @@ interface ProjectsResponse {
 }
 
 // 1) create instance
+// const api = axios.create({
+//   baseURL: API_URL,
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+// });
+
 const api = axios.create({
   baseURL: API_URL,
+  withCredentials: true, // FOR SEND COOKIES
   headers: {
     "Content-Type": "application/json",
   },
