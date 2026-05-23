@@ -1,7 +1,7 @@
 "use client";
 
 import { vazirMedium } from "@/app/fonts";
-import { signup } from "@/lib/authActions";
+import { signIn } from "next-auth/react";
 import {
   RegisterFormData,
   registerSchema,
@@ -10,6 +10,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+
+import { authAPI } from "@/lib/api";
 
 // DEFAULT VALUES
 const defaultRegisterValue = {
@@ -34,21 +36,39 @@ function RegisterForm() {
 
   // HANDEL SUBMIT
   const onSubmit = async (data: RegisterFormData) => {
-    // create form data
-    const formData = new FormData();
-    formData.set("name", data.name);
-    formData.set("family", data.family);
-    formData.set("phone", data.phone);
-    formData.set("password", data.password);
-    formData.set("passwordConfirm", data.passwordConfirm);
+    const phone = data.phone;
+    const password = data.password;
 
-    const result = await signup(formData);
+    // SIGNUP
+    const responseResult = await authAPI.signup(data);
 
-    if (result?.success) {
-      toast.success("ثبت نام شما با موفقیت انجام شد");
-      router.replace("/dashboard");
+    if (responseResult?.success) {
+      // LOGIN
+      const resultLogin = await signIn("credentials", {
+        phone: phone,
+        password: password,
+        redirect: false,
+      });
+
+      if (resultLogin?.ok) {
+        // SET AUTH-ROLE COOKIE
+        const setRoleCookieResponse = await authAPI.setRoleCookie();
+
+        if (setRoleCookieResponse.success) {
+          toast.success("ثبت نام شما با موفقیت انجام شد");
+          router.replace("/dashboard");
+        } else {
+          toast.error("نقش کاربر به درستی ذخیره نشد");
+          router.replace("/login");
+        }
+      } else {
+        toast.error(
+          "ثبت نام با موفقیت انجام شد ، اما ورود خودکار انجام نشد.لطفا وارد شوید.",
+        );
+        router.replace("/login");
+      }
     } else {
-      toast.error("ثبت نام با موفقیت انجان نشد.");
+      toast.error("ثبت نام انجام نشد.");
     }
   };
 

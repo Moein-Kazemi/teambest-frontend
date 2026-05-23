@@ -1,9 +1,12 @@
-import { IProject } from "@/interfaces/projectInterfaces";
+import { IProject } from "./../interfaces/projectInterfaces";
 import axios from "axios";
+import { getServerSession } from "next-auth";
 
 import { unstable_cache } from "next/cache";
+import { authOptions } from "./auth";
+import { RegisterFormData } from "@/validation/authValidationsSchema";
 
-const API_URL = "http://localhost:5000/api/v1";
+const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1`;
 
 // TYPE CHECKER
 interface ProjectsResponse {
@@ -13,7 +16,38 @@ interface ProjectsResponse {
     projects: IProject[];
   };
 }
+// declare module "next-auth" {
+//   /**
+//    * گسترش دادن نوع Session برای اضافه کردن accessToken
+//    */
+//   interface Session {
+//     accessToken?: string;
+//     user?: {
+//       id?: string;
+//       name?: string;
+//       family?: string;
+//       phone?: string;
+//       role?: string;
+//       jobTitle?: string;
+//       teamId?: string;
+//       accessToken?: string; // این خط هم اضافه شد تا در session.user هم دسترسی داشته باشید
+//     } & DefaultSession["user"];
+//   }
 
+//   /**
+//    * گسترش دادن نوع JWT برای هماهنگی با callback های jwt
+//    */
+//   // interface JWT {
+//   //   accessToken?: string;
+//   //   id?: string;
+//   //   name?: string;
+//   //   family?: string;
+//   //   phone?: string;
+//   //   role?: string;
+//   //   jobTitle?: string;
+//   //   teamId?: string;
+//   // }
+// }
 // 1) create instance
 // const api = axios.create({
 //   baseURL: API_URL,
@@ -40,7 +74,7 @@ export const projectsAPI = {
         );
         return data;
       } catch (error) {
-        console.error("Error fetching projects:", error);
+        console.error("خطا در دریافت پروژه ها.", error);
         throw error;
       }
     },
@@ -85,17 +119,53 @@ export const tasksAPI = {
   },
 };
 
-/* 
-CHANGE THESE CODE BASE ON THE API
+export const authAPI = {
+  signup: async (data: RegisterFormData) => {
+    try {
+      const { data: responseResult } = await axios.post(
+        `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/auth/signup`,
+        {
+          name: data.name,
+          family: data.family,
+          phone: data.phone,
+          password: data.password,
+          passwordConfirm: data.passwordConfirm,
+        },
+      );
+      return responseResult;
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  setRoleCookie: async () => {
+    const { data: setRoleCookieResponse } = await axios.get(
+      "/api/auth/set-role-cookie",
+    );
+    return setRoleCookieResponse;
+  },
+  clearRoleCookie: async () => {
+    const { data: clearRoleCookieRes } = await axios.get(
+      "/api/auth/clear-role-cookie",
+    );
+    return clearRoleCookieRes;
+  },
+};
 
-// اضافه کردن token به هر درخواست
-api.interceptors.request.use((config) => {
-  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+//CHANGE THESE CODE BASE ON THE API
+api.interceptors.request.use(async (config) => {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (session?.accessToken) {
+      config.headers.Authorization = `Bearer ${session.accessToken}`;
+    }
+  } catch (error) {
+    console.error("Error fetching session for axios interceptor:", error);
   }
   return config;
 });
+
+/*
 
 // Auth APIs
 export const authAPI = {

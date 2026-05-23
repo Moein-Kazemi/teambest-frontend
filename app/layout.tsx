@@ -3,6 +3,7 @@ import "@/app/globals.css" with { type: "css" };
 import { vazirLight } from "./fonts";
 import Navbar from "@/ui/Navbar";
 import ToastProvider from "./_toast/ToastProvider";
+import { SessionProviders } from "./_sessionProvider/SessionProvider";
 
 export const metadata: Metadata = {
   title: {
@@ -24,7 +25,7 @@ export default function RootLayout({
       <body className={` antialiased ${vazirLight.className}`}>
         <ToastProvider>
           <Navbar />
-          {children}
+          <SessionProviders>{children}</SessionProviders>
         </ToastProvider>
       </body>
     </html>

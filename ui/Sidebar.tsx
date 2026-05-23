@@ -1,3 +1,6 @@
+import LogoutButton from "@/components/LogoutButton";
+import { logout } from "@/lib/authActions";
+import { Rocket, User } from "lucide-react";
 import Link from "next/link";
 
 export default function Sidebar() {
@@ -26,20 +29,7 @@ export default function Sidebar() {
         </li>
         <li>
           <Link href="/projects" className="flex items-center gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-              />
-            </svg>
+            <Rocket size={18} />
             پروژه ها
           </Link>
         </li>
@@ -68,12 +58,16 @@ export default function Sidebar() {
             وظایف
           </Link>
         </li>
+        <li>
+          <Link href="/profile" className="flex items-center gap-2">
+            <User size={18} />
+            پروفایل
+          </Link>
+        </li>
       </ul>
 
-      {/* فوتر سایدبار */}
-      <div className="p-4 border-t border-base-300">
-        <button className="btn btn-outline btn-error w-full">خروج</button>
-      </div>
+      {/* LOGOUT*/}
+      <LogoutButton />
     </aside>
   );
 }

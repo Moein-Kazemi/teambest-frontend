@@ -7,9 +7,17 @@ import { IProject } from "@/interfaces/projectInterfaces";
 import { projectSchema } from "@/validation/projectValidationSchema";
 
 export async function deleteProject(projectId: string) {
-  await api.delete(`/projects/${projectId}`);
-  revalidateTag("projects");
-  revalidatePath("/projects");
+  try {
+    await api.delete(`/projects/${projectId}`);
+    revalidateTag("projects");
+    revalidatePath("/projects");
+  } catch (err) {
+    if (err instanceof Error) {
+      return { success: false, error: err.message};
+    } else {
+      return { success: false, error: `عملیات با کد خطا ${err} انجام نشد.` };
+    }
+  }
 }
 
 export async function createProject(

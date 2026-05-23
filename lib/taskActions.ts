@@ -45,25 +45,32 @@ export async function createTask(formData: FormData): Promise<{
 }
 
 export async function deleteTaskById(taskId: string) {
-  await api.delete(`/tasks/${taskId}`);
-  revalidateTag("projects");
-  revalidatePath("/tasks");
+  try {
+    await api.delete(`/tasks/${taskId}`);
+    revalidateTag("projects");
+    revalidatePath("/tasks");
+  } catch (err) {
+    if (err instanceof Error) {
+      return { success: false, error: err.message };
+    } else {
+      return { success: false, error: `عملیات با کد خطا ${err} انجام نشد.` };
+    }
+  }
 }
 
 export async function updateTask(
   id: string,
   data: Partial<ITask>,
-):Promise <{ success: boolean; message: string }> {
-    try{
-
-        await api.patch(`/tasks/${id}`, data);
-        revalidatePath("/tasks");
-        return { success: true, message: "وظیفه با موفقیت شروع به انجام شد" };
-    } catch(err){
-        if(err instanceof Error){
-            return {success:false , message: err.message}
-        } else{
-            return {success:false , message: "پروژه به دلایلی شروع نشد."}
-        }
+): Promise<{ success: boolean; message: string }> {
+  try {
+    await api.patch(`/tasks/${id}`, data);
+    revalidatePath("/tasks");
+    return { success: true, message: "وظیفه با موفقیت شروع به انجام شد" };
+  } catch (err) {
+    if (err instanceof Error) {
+      return { success: false, message: err.message };
+    } else {
+      return { success: false, message: "پروژه به دلایلی شروع نشد." };
     }
+  }
 }

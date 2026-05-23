@@ -1,7 +1,11 @@
 "use client";
 import { vazirMedium } from "@/app/fonts";
+import { authAPI } from "@/lib/api";
 import { LoginFormData, loginSchema } from "@/validation/authValidationsSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+
+import { signIn } from "next-auth/react";
+
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -13,6 +17,7 @@ const defaultRegisterValue = {
 
 function LoginForm() {
   const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -24,25 +29,27 @@ function LoginForm() {
   });
 
   const onSubmit = async (data: LoginFormData) => {
-    const formData = new FormData();
-    formData.set("phone", data.phone);
-    formData.set("password", data.password);
-
-    const response = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
+    // REQUEST TO NEXTAUTH DIRECTLY AND LOG IN.
+    const resultLogin = await signIn("credentials", {
+      phone: data.phone,
+      password: data.password,
+      redirect: false,
     });
 
-    const res = await response.json();
+    if (resultLogin?.ok) {
+      // SET ROLE COOKIE
+      const setRoleCookieResponse = await authAPI.setRoleCookie();
 
-    if (res.success) {
-      toast.success("ورود موفقیت آمیز بود.");
-      router.replace("/dashboard");
+      if (setRoleCookieResponse.success) {
+        toast.success("ورود موفقیت آمیز");
+        router.replace("/dashboard");
+      } else {
+        toast.error("نقش کاربر به درستی ذخیره نشد");
+        router.replace("/login");
+      }
     } else {
-      toast.error("ورود ناموفق");
+      toast.error("ورود نا موفق.");
+      router.replace("/dashboard");
     }
   };
 

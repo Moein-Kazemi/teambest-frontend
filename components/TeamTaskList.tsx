@@ -5,7 +5,7 @@ import TaskCard from "./TaskCard";
 
 async function TeamTaskList() {
   const teamTasksIds: string[] = [];
-  let teamTasks: ITask[] = [];
+  const teamTasks: ITask[] = [];
 
   // fetch projects
   const response = await projectsAPI.getProjectsByTeam(
