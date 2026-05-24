@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import "@/app/globals.css" with { type: "css" };
 import { vazirLight } from "./fonts";
-import Navbar from "@/ui/Navbar";
+
 import ToastProvider from "./_toast/ToastProvider";
 import { SessionProviders } from "./_sessionProvider/SessionProvider";
+import Header from "@/ui/Header";
 
 export const metadata: Metadata = {
   title: {
@@ -24,7 +25,7 @@ export default function RootLayout({
     <html lang="fa" dir="rtl" data-theme="light">
       <body className={` antialiased ${vazirLight.className}`}>
         <ToastProvider>
-          <Navbar />
+          <Header />
           <SessionProviders>{children}</SessionProviders>
         </ToastProvider>
       </body>

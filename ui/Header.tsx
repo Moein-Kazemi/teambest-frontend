@@ -1,37 +1,18 @@
 "use client";
 import { vazirBold } from "@/app/fonts";
-import DropdownLinks from "@/components/DropdownLinks";
+
 import HeaderLinks from "@/components/HeaderLinks";
 import Link from "next/link";
 import Logo from "./Logo";
+import HamberMenu from "./HamberMenu";
 
-
-export default function Navbar() {
+export default function Header() {
   return (
     <header className="navbar space-x-4  bg-base-100 shadow-md justify-between sticky top-0 z-51">
       {/* LOGO IN DESKTOP SIZE AND ALSO MENU BUTTON IN THE MOBILE SIZE */}
       <div className="navbar-start w-auto  lg:justify-start lg:w-[50%]">
         {/* HAMBERGURE BUTTON*/}
-        <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-            <svg
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h8m-8 6h16"
-              />
-            </svg>
-          </div>
-
-          {/* DROPDOWN MENU IN MOBILE SIZE*/}
-          <DropdownLinks />
-        </div>
+        <HamberMenu />
 
         {/* LOGO IN DESKTOP SIZE*/}
         <div className="w-30 hidden lg:block  ">

@@ -1,24 +1,52 @@
 import { vazirBold } from "@/app/fonts";
-import Link from "next/link";
+import {
+  CheckSquare,
+  HomeIcon,
+  LayoutDashboardIcon,
+  Rocket,
+  User,
+} from "lucide-react";
+import SideNavLink from "./SideNavLink";
+import LogoutButton from "./LogoutButton";
 
-export default function DropdownLinks() {
-  return (
-    <ul
-      tabIndex={0}
-      className={`menu menu-sm dropdown-content ${vazirBold.className} bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow right-0 top-full`}
-    >
-      <li>
-        <Link href="/">خانه</Link>
-      </li>
-      <li>
-        <Link href="/dashboard">داشبورد</Link>
-      </li>
-      <li>
-        <Link href="/projects">پروژه ها</Link>
-      </li>
-      <li>
-        <Link href="/tasks">وظایف</Link>
-      </li>
-    </ul>
-  );
+const mobileMnueLinks = [
+  { link: "/", icon: <HomeIcon size={14} />, text: "خانه" },
+  {
+    link: "/dashboard",
+    icon: <LayoutDashboardIcon size={14} />,
+    text: "داشبورد",
+  },
+  { link: "/projects", icon: <Rocket size={14} />, text: "پروژه ها" },
+  { link: "/tasks", icon: <CheckSquare size={14} />, text: "وظایف" },
+  { link: "/profile", icon: <User size={14} />, text: "حساب کاربری" },
+];
+
+interface DropdownLinksProps {
+  isOpen: boolean;
+  toggleIsOpen: () => void;
+}
+
+export default function DropdownLinks({
+  isOpen,
+  toggleIsOpen,
+}: DropdownLinksProps) {
+  if (isOpen) {
+    return (
+      <ul
+        tabIndex={0}
+        className={`menu menu-sm dropdown-content bg-gray-100 ${isOpen && "absolute right-0 top-0 z-55"} space-y-4 h-[80vh] ${vazirBold.className} bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow right-0 top-full`}
+      >
+        {mobileMnueLinks.map((link) => (
+          <SideNavLink
+            key={link.link}
+            link={link.link}
+            icon={link.icon}
+            text={link.text}
+            handleClick={toggleIsOpen}
+          />
+        ))}
+        <LogoutButton />
+      </ul>
+    );
+  }
 }

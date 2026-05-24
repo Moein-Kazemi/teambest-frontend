@@ -56,10 +56,10 @@ function LoginForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className=" grid grid-cols-2 gap-5 rounded-2xl shadow-[0_3px_20px_rgba(0,0,0,0.25)]  bg-base-100 border-t border-t-gray-700/20   max-w-4xl mx-auto py-4 px-6"
+      className=" grid grid-cols-2 gap-5 rounded-2xl shadow-[0_3px_20px_rgba(0,0,0,0.25)]  bg-base-100 border-t border-t-gray-700/20   max-w-sm mx-auto py-4 px-6"
     >
       {/* PHONE */}
-      <div className="form-control col-span-2 min-[640px]:col-span-1 w-full flex gap-2 flex-col   pb-7 ">
+      <div className="form-control col-span-2  w-full flex gap-2 flex-col   pb-7 ">
         <label className="label">
           <span className={` label-text text-black ${vazirMedium.className}`}>
             شماره تماس <span className="text-red-600">*</span>
@@ -85,7 +85,7 @@ function LoginForm() {
       </div>
 
       {/* PASSWORD */}
-      <div className="form-control col-span-2 min-[640px]:col-span-1 w-full flex gap-2 flex-col    pb-7 ">
+      <div className="form-control col-span-2  w-full flex gap-2 flex-col    pb-7 ">
         <label className="label">
           <span className={` label-text text-black ${vazirMedium.className}`}>
             رمز عبور <span className="text-red-600">*</span>
