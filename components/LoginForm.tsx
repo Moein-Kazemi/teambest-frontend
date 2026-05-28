@@ -4,9 +4,11 @@ import { authAPI } from "@/lib/api";
 import { LoginFormData, loginSchema } from "@/validation/authValidationsSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import Link from "next/link";
 
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -17,6 +19,8 @@ const defaultRegisterValue = {
 
 function LoginForm() {
   const router = useRouter();
+  const { data: session, status } = useSession();
+  console.log(session);
 
   const {
     register,
@@ -27,6 +31,13 @@ function LoginForm() {
     mode: "onChange",
     defaultValues: defaultRegisterValue,
   });
+
+  // If THE SESSION IS EXIST GO TO DASHBOARD
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.replace("/dashboard");
+    }
+  }, [status, router]);
 
   const onSubmit = async (data: LoginFormData) => {
     // REQUEST TO NEXTAUTH DIRECTLY AND LOG IN.
@@ -42,7 +53,6 @@ function LoginForm() {
 
       if (setRoleCookieResponse.success) {
         toast.success("ورود موفقیت آمیز");
-        router.replace("/dashboard");
       } else {
         toast.error("نقش کاربر به درستی ذخیره نشد");
         router.replace("/login");
@@ -107,6 +117,16 @@ function LoginForm() {
             </label>
           )}
         </div>
+      </div>
+
+      <div className="col-span-2 flex flex-row gap-2 w-full text-black text-[14px] ">
+        حساب کاربری ندارید؟
+        <Link
+          href="/signup"
+          className={`text-primary ${vazirMedium.className} border-b border-b-primary`}
+        >
+          ثبت نام
+        </Link>
       </div>
 
       {/* LOGIN */}

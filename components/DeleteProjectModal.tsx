@@ -4,6 +4,7 @@ import { vazirBold } from "@/app/fonts";
 import { deleteProject } from "@/lib/projectActions";
 import { Trash } from "lucide-react";
 import { useRef } from "react";
+import { toast } from "sonner";
 
 export default function DeleteProjectModal({
   projectId,
@@ -29,7 +30,12 @@ export default function DeleteProjectModal({
 
   // هندلر تایید حذف
   const handleConfirmDelete = async () => {
-    await deleteProject(projectId);
+    const res = await deleteProject(projectId);
+    if (res.success) {
+      toast.success("پروژه با موفقیت حذف شد.");
+    } else {
+      toast.error("حذف ناموفق");
+    }
     closeModal();
   };
 

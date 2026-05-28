@@ -10,7 +10,7 @@ interface SideNavProps {
 }
 
 function SideNavLink({ link, icon, text, handleClick }: SideNavProps) {
-  const path = usePathname();
+  const path = usePathname(); //
 
   return (
     <li className="">

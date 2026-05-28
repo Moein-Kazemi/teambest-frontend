@@ -36,12 +36,19 @@ const steps: Step[] = [
   },
 ];
 
-export default function StepProgressBar({ currStep }: { currStep: number }) {
+export default function StepProgressBar({ role }: { role: string }) {
   // const { data } = useSession();
   // console.log(data?.user);
   // فرض بر این است که کاربر در مرحله ۱ (اول) قرار دارد.
   // می‌توانید این متغیر را از پراپ‌ها (props) دریافت کنید.
-  const currentStep = currStep;
+  let currentStep: number = 2;
+  if (role === "user") {
+    currentStep = 2;
+  }
+  if (role === "member") {
+    currentStep = 3;
+  }
+  if (role === "manager") currentStep = 3;
 
   return (
     <div className="w-full max-w-4xl mx-auto my-5 md:my-10 p-4">

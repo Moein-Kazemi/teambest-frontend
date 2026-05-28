@@ -11,9 +11,10 @@ export async function deleteProject(projectId: string) {
     await api.delete(`/projects/${projectId}`);
     revalidateTag("projects");
     revalidatePath("/projects");
+    return { success: true };
   } catch (err) {
     if (err instanceof Error) {
-      return { success: false, error: err.message};
+      return { success: false, error: err.message };
     } else {
       return { success: false, error: `عملیات با کد خطا ${err} انجام نشد.` };
     }

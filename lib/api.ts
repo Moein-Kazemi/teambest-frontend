@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth";
 import { unstable_cache } from "next/cache";
 import { authOptions } from "./auth";
 import { RegisterFormData } from "@/validation/authValidationsSchema";
+import { IUser } from "@/interfaces/userInterfaces";
 
 const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1`;
 
@@ -151,10 +152,52 @@ export const authAPI = {
   },
 };
 
+// export const userAPI = {
+//   getUser: async (userId: string) => {
+//     return unstable_cache(
+//       async () => {
+//         const { data } = await api.get(`/users/${userId}`);
+
+//         return data.data.user as IUser;
+//       },
+
+//       [`user-${userId}`],
+
+//       {
+//         revalidate: 1800, // cache for 30 minutes
+//         tags: [`user-${userId}`],
+//       },
+//     )();
+//   },
+// };
+
 //CHANGE THESE CODE BASE ON THE API
+
+export const getUser = async (userId: string) => {
+  const session = await getServerSession(authOptions);
+  return unstable_cache(
+    async (): Promise<IUser> => {
+      const { data } = await api.get(`/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+      });
+
+      return data.data.user;
+    },
+
+    [`user-${userId}`],
+
+    {
+      revalidate: 1800,
+      tags: [`user-${userId}`],
+    },
+  )();
+};
 api.interceptors.request.use(async (config) => {
   try {
     const session = await getServerSession(authOptions);
+    console.log(session?.accessToken);
 
     if (session?.accessToken) {
       config.headers.Authorization = `Bearer ${session.accessToken}`;

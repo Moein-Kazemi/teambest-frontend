@@ -2,6 +2,7 @@ import DateTimeBox from "@/components/DateTimeBox";
 import StepProgressBar from "@/components/StepProgressBar";
 import UserInfo from "@/components/UserInfo";
 import UserStatus from "@/components/UserStatus";
+import WelcomeBox from "@/components/WelcomeBox";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
@@ -18,9 +19,8 @@ position: relative;
 */
 
 async function Page() {
+  //  GET CURRENT USER
   const session = await getServerSession(authOptions);
-  // const { user } = session;
-
   const user = session?.user;
 
   const userProfile = {
@@ -32,29 +32,36 @@ async function Page() {
     activeProjects: 5,
     pendingTasks: 8,
   };
-  if (!session) {
-    return <div>لطفاً وارد شوید.</div>;
-  }
 
-  if (user?.role === "user") {
+  if (user?.teamId === null || user?.teamId === "") {
     return (
       <>
-        <StepProgressBar currStep={2} />
-        <Link href="/profile"></Link>
+        <WelcomeBox name={user?.name as string} role={user?.role as string} />
+        <StepProgressBar role={user.role as string} />
+        <div className="flex justify-center">
+          <Link
+            href="/profile"
+            className="btn  btn-outline btn-warning max-w-80 w-full"
+          >
+            حساب کاربری
+          </Link>
+        </div>
       </>
     );
   }
 
-  return (
-    <div className="grid grid-cols-12 gap-2">
-      <UserInfo userProfile={userProfile} />
-      <DateTimeBox />
+  if (user?.teamId && user.teamId !== "") {
+    return (
+      <div className="grid grid-cols-12 gap-2">
+        <UserInfo userProfile={userProfile} />
+        <DateTimeBox />
 
-      {/* divider line*/}
-      <div className="divider w-full"></div>
-      <UserStatus userProfile={userProfile} />
-    </div>
-  );
+        {/* divider line*/}
+        <div className="divider w-full"></div>
+        <UserStatus userProfile={userProfile} />
+      </div>
+    );
+  }
 }
 
 export default Page;

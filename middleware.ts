@@ -13,6 +13,7 @@ const publicRoutes = [
 
 // PROTECTED ROUTE
 const protectedRoute = ["/dashboard", "/projects", "/tasks", "/chat", "/note"];
+const userOnlyRoutes = ["/profile/complete"];
 const managerOnlyRoutes = ["/projects/create", "/tasks/create", "/manager"];
 
 export async function middleware(request: NextRequest) {
@@ -40,6 +41,15 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }
     if (!userRole || userRole !== "manager") {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
+    }
+  }
+  // IF IS USER ROUTE ONLY ALLOW USER ROLE
+  if (userOnlyRoutes.some((route) => pathname.startsWith(route))) {
+    if (!sessionToken) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+    if (!userRole || userRole !== "user") {
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }
   }
