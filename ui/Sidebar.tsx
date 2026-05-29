@@ -1,11 +1,12 @@
 import LogoutButton from "@/components/LogoutButton";
 import SideNavLink from "@/components/SideNavLink";
-import { CheckSquare, Home, Rocket, User } from "lucide-react";
+import { CheckSquare, Home, Rocket, User, Users } from "lucide-react";
 
 const sideNavLinks = [
   { link: "/dashboard", icon: <Home size={18} />, text: "داشبورد" },
   { link: "/projects", icon: <Rocket size={18} />, text: " پروژه ها" },
   { link: "/tasks", icon: <CheckSquare size={18} />, text: "وظایف" },
+  { link: "/team", icon: <Users size={18} />, text: "تیم" },
   { link: "/profile", icon: <User size={18} />, text: "حساب کاربری" },
 ];
 

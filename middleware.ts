@@ -14,7 +14,12 @@ const publicRoutes = [
 // PROTECTED ROUTE
 const protectedRoute = ["/dashboard", "/projects", "/tasks", "/chat", "/note"];
 const userOnlyRoutes = ["/profile/complete"];
-const managerOnlyRoutes = ["/projects/create", "/tasks/create", "/manager"];
+const managerOnlyRoutes = [
+  "/projects/create",
+  "/tasks/create",
+  "/team/create",
+  "/manager",
+];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
