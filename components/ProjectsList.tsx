@@ -3,25 +3,35 @@ import { projectsAPI } from "@/lib/api";
 
 import Link from "next/link";
 import ProjectCard from "./ProjectCard";
+import EmptyStat from "@/ui/EmptyStat";
+import { Rocket } from "lucide-react";
 
-async function ProjectsList() {
+interface ProjectsListProps {
+  teamId: string;
+  role: string;
+}
+
+async function ProjectsList({ teamId, role }: ProjectsListProps) {
   // the teamId must be cahnged in the future base on the User.teamId
-  const response = await projectsAPI.getProjectsByTeam(
-    "69df5fc47621324e98a37b93",
-  );
+  let response;
+  let projects: IProject[] = [];
 
-  const projects: IProject[] = response.data.projects;
+  if (teamId) {
+    response = await projectsAPI.getProjectsByTeam(teamId);
+    projects = response?.data.projects;
+  }
 
   // IF THE PROJECT DOES NOT EXIST YET.
 
   if (projects.length === 0)
     return (
-      <div className="text-center space-y-4">
-        <h5 className="text-xl">پروژه ای یافت نشد</h5>
-        <Link href="/project/create" className="text-primary">
-          ایجاد پروژه +
-        </Link>
-      </div>
+      <EmptyStat
+        icon={<Rocket size={40} className="text-secondary" />}
+        title="هیچ پروژه ای یافت نشد"
+        description="هیچ پروژه ای ایجاد نشده ابتدا باید مدیر پروژه ای ایجاد کند."
+        role={role}
+        createLink="/projects/create"
+      />
     );
 
   return (

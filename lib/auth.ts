@@ -2,6 +2,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios"; // برای ارسال درخواست به بک‌اند
 import { NextAuthOptions } from "next-auth";
 import { ITokenPayload } from "@/interfaces/tokenInterfaces";
+import api from "./api";
 
 // TYPE CHEKER
 
@@ -119,8 +120,7 @@ export const authOptions: NextAuthOptions = {
   // کالبک‌ها - برای مدیریت session و token
   callbacks: {
     // کالبک jwt - هر بار که token ایجاد یا به‌روزرسانی می‌شود اجرا می‌شود
-    async jwt({ token, user }) {
-      //trigger, session
+    async jwt({ token, user, trigger }) {
       // زمان لاگین (user موجود است) - اطلاعات کاربر را به token اضافه می‌کنیم
       if (user) {
         token.id = user.id;
@@ -132,8 +132,22 @@ export const authOptions: NextAuthOptions = {
         token.accessToken = user.token; // ذخیره توکن دریافتی از بک‌اند
       }
 
-      // اگر token منقضی شده باشد، می‌توانید تمدید کنید
-      // (اختیاری - بسته به نیاز پروژه)
+      // IF UPDATE CALL FROM CLIENT THE JWT CALLBACK IS CALL AGAIN
+      if (trigger === "update") {
+        const { data } = await api.get(`/users/${token.id}`, {
+          headers: { Authorization: `Bearer ${token.accessToken}` },
+        });
+
+        const dbUser = data.data.user;
+
+        token.id = dbUser.id;
+        token.name = dbUser.name;
+        token.family = dbUser.family;
+        token.role = dbUser.role;
+        token.jobTitle = dbUser.jobTitle;
+        token.teamId = dbUser.teamId;
+        token.accessToken = dbUser.token;
+      }
 
       return token;
     },

@@ -1,18 +1,13 @@
+import { ITeam } from "@/interfaces/teamInterfaces";
+import { IUser } from "@/interfaces/userInterfaces";
 import { CheckSquare, FolderKanban, Users } from "lucide-react";
 
 interface UserStatusProp {
-  userProfile: {
-    name: string;
-    role: string;
-    team: string;
-    avatar: string;
-    teamMembers: number;
-    activeProjects: number;
-    pendingTasks: number;
-  };
+  fetchedUser: IUser;
+  team: ITeam;
 }
 
-function UserStatus({ userProfile }: UserStatusProp) {
+function UserStatus({ fetchedUser, team }: UserStatusProp) {
   return (
     <div className="grid grid-cols-4 gap-2 w-full col-span-12  ">
       {/* باکس ۱: اعضای تیم */}
@@ -22,7 +17,7 @@ function UserStatus({ userProfile }: UserStatusProp) {
         </div>
         <div className="stat-title text-xs">اعضای تیم</div>
         <div className="stat-value text-xl text-primary">
-          {userProfile.teamMembers}
+          {team.members.length}
         </div>
       </div>
 
@@ -33,7 +28,7 @@ function UserStatus({ userProfile }: UserStatusProp) {
         </div>
         <div className="stat-title text-xs">پروژه‌ها</div>
         <div className="stat-value text-xl text-secondary">
-          {userProfile.activeProjects}
+          {team.projects?.length || 0}
         </div>
       </div>
 
@@ -43,9 +38,7 @@ function UserStatus({ userProfile }: UserStatusProp) {
           <CheckSquare className="w-6 h-6" />
         </div>
         <div className="stat-title text-xs">تسک‌های من</div>
-        <div className="stat-value text-xl text-accent">
-          {userProfile.pendingTasks}
-        </div>
+        <div className="stat-value text-xl text-accent">فعلا هیچی</div>
       </div>
     </div>
   );

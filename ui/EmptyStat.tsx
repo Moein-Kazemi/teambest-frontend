@@ -6,9 +6,16 @@ interface EmptyStatProps {
   title: string;
   description: string;
   role: string;
+  createLink: string;
 }
 
-function EmptyStat({ icon, title, description, role }: EmptyStatProps) {
+function EmptyStat({
+  icon,
+  title,
+  description,
+  role,
+  createLink,
+}: EmptyStatProps) {
   return (
     <div className="container  mx-auto py-6 md:py-12 px-4">
       <div className="max-w-2xl border-t-gray-700/20 rounded-2xl shadow-[0_3px_20px_rgba(0,0,0,0.25)] mx-auto">
@@ -26,7 +33,7 @@ function EmptyStat({ icon, title, description, role }: EmptyStatProps) {
 
             {role === "manager" && (
               <div className="mt-8">
-                <Link href="/team/create" className="btn btn-primary gap-2">
+                <Link href={createLink} className="btn btn-primary gap-2">
                   <PlusCircle size={20} />
                   ایجاد
                 </Link>

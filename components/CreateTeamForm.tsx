@@ -10,6 +10,10 @@ import {
   CreateTeamFormData,
 } from "@/validation/teamValidationsSchema";
 import Image from "next/image";
+import { createTeam } from "@/lib/teamActions";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 // ==================== TYPES ====================
 
@@ -32,8 +36,10 @@ export default function CreateTeamForm({
   token,
   ownerId,
 }: CreateTeamFormProps) {
+  const { update } = useSession();
   const [searchedUsers, setSearchedUsers] = useState<IUser[]>([]);
   const [searchPhone, setSearchPhone] = useState("");
+  const router = useRouter();
   // const [users, setUsers] = useState<IUser[]>([]);
   // const [loadingUsers, setLoadingUsers] = useState(true);
 
@@ -74,26 +80,15 @@ export default function CreateTeamForm({
   // ==================== SUBMIT ====================
 
   const onSubmit = async (data: CreateTeamFormData) => {
-    console.log(data);
-    // try {
-    //   const payload = {
-    //     name: data.name,
-    //     summary: data.summary,
-    //     logo: data.logo,
-    //     ownerId: data.ownerId,
-    //     members: data.members,
-    //   };
-
-    //   console.log(payload);
-
-    //   await axios.post("http://127.0.0.1:5000/api/v1/teams", payload);
-
-    //   alert("تیم با موفقیت ایجاد شد");
-    // } catch (error) {
-    //   console.error(error);
-
-    //   alert("خطا در ایجاد تیم");
-    // }
+    const result = await createTeam(data);
+    if (result.success) {
+      await update();
+      toast.success("تیم با موفقیت ایجاد شد.");
+      router.refresh();
+    } else {
+      toast.error("تشکیل تیم ناموفق");
+    }
+    router.replace("/team");
   };
 
   return (
@@ -158,7 +153,7 @@ export default function CreateTeamForm({
       {/* ==================== LOGO ==================== */}
       <div className="form-control rounded-2xl bg-orange-200/50 items-center flex gap-2 flex-col md:flex-row md:items-center pb-7 md:pb-0">
         <p className="p-4 text-primary/70 text-center">
-          در آینده میتوانید برای تیم خود لوگو قرار دهید.
+          در نسخه های بعدی میتوانید برای تیم خود لوگو قرار دهید.
         </p>
       </div>
 
@@ -173,7 +168,7 @@ export default function CreateTeamForm({
           <div className="relative w-full">
             {/* SEARCH INPUT + BUTTON */}
 
-            <div className="flex gap-3">
+            <div className="flex flex-col md:flex-row gap-3">
               <input
                 type="text"
                 value={searchPhone}
@@ -320,12 +315,4 @@ export default function CreateTeamForm({
       </div>
     </form>
   );
-}
-
-{
-  /* SEARCH RESULTS */
-}
-
-{
-  /* SELECTED MEMBERS */
 }

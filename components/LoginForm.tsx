@@ -20,7 +20,6 @@ const defaultRegisterValue = {
 function LoginForm() {
   const router = useRouter();
   const { data: session, status } = useSession();
-  console.log(session);
 
   const {
     register,

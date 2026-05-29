@@ -6,6 +6,7 @@ import { unstable_cache } from "next/cache";
 import { authOptions } from "./auth";
 import { RegisterFormData } from "@/validation/authValidationsSchema";
 import { IUser } from "@/interfaces/userInterfaces";
+import { ITeam } from "@/interfaces/teamInterfaces";
 
 const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1`;
 
@@ -173,6 +174,7 @@ export const authAPI = {
 
 //CHANGE THESE CODE BASE ON THE API
 
+// GET ALL INFOR OF LOGIN USER
 export const getUser = async (userId: string) => {
   const session = await getServerSession(authOptions);
   return unstable_cache(
@@ -194,6 +196,22 @@ export const getUser = async (userId: string) => {
     },
   )();
 };
+
+// GET TEAM INFO
+export const getTeam = async (teamId: string): Promise<ITeam> => {
+  const session = await getServerSession(authOptions);
+  return unstable_cache(
+    async (): Promise<ITeam> => {
+      const { data } = await api.get(`/teams/${teamId}`, {
+        headers: { Authorization: `Bearer ${session?.accessToken}` },
+      });
+      return data.data.team;
+    },
+    [`team-${teamId}`],
+    { revalidate: 1800, tags: [`team-${teamId}`] },
+  )();
+};
+
 api.interceptors.request.use(async (config) => {
   try {
     const session = await getServerSession(authOptions);

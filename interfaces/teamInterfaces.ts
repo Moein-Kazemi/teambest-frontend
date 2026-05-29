@@ -12,6 +12,7 @@ export interface ITeamProject {
 }
 // ==================== ITeam ====================
 export interface ITeam {
+  _id: string;
   name: string;
   summary: string;
   logo: string;

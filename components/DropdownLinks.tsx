@@ -5,6 +5,7 @@ import {
   LayoutDashboardIcon,
   Rocket,
   User,
+  Users,
 } from "lucide-react";
 import SideNavLink from "./SideNavLink";
 import LogoutButton from "./LogoutButton";
@@ -18,6 +19,7 @@ const mobileMnueLinks = [
   },
   { link: "/projects", icon: <Rocket size={14} />, text: "پروژه ها" },
   { link: "/tasks", icon: <CheckSquare size={14} />, text: "وظایف" },
+  { link: "/team", icon: <Users size={14} />, text: "تیم" },
   { link: "/profile", icon: <User size={14} />, text: "حساب کاربری" },
 ];
 
