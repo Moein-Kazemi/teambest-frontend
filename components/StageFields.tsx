@@ -1,8 +1,9 @@
 import { ProjectFormData } from "@/validation/projectValidationSchema";
-import { Control, UseFormRegister } from "react-hook-form";
+import { Control, UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { useFieldArray } from "react-hook-form";
 import TaskFields from "./TaskFields";
 import { vazirMedium } from "@/app/fonts";
+import { ITeamMember } from "@/interfaces/teamInterfaces";
 
 interface StageFieldsProps {
   stageIndex: number;
@@ -11,6 +12,8 @@ interface StageFieldsProps {
   errors: any;
   canDelete: boolean;
   onDelete: () => void;
+  members: ITeamMember[];
+  setValue: UseFormSetValue<ProjectFormData>;
 }
 
 export default function StageFields({
@@ -20,6 +23,8 @@ export default function StageFields({
   errors,
   canDelete,
   onDelete,
+  members,
+  setValue,
 }: StageFieldsProps) {
   // task assignement
   const {
@@ -119,6 +124,8 @@ export default function StageFields({
             errors={errors?.taskAssignments?.[taskIndex]}
             canDelete={taskFields.length > 1}
             onDelete={() => removeTask(taskIndex)}
+            members={members}
+            setValue={setValue}
           />
         ))}
       </div>

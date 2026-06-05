@@ -119,9 +119,8 @@ export const authOptions: NextAuthOptions = {
 
   // کالبک‌ها - برای مدیریت session و token
   callbacks: {
-    // کالبک jwt - هر بار که token ایجاد یا به‌روزرسانی می‌شود اجرا می‌شود
     async jwt({ token, user, trigger }) {
-      // زمان لاگین (user موجود است) - اطلاعات کاربر را به token اضافه می‌کنیم
+      // ===== Login =====
       if (user) {
         token.id = user.id;
         token.name = user.name;
@@ -129,24 +128,61 @@ export const authOptions: NextAuthOptions = {
         token.role = user.role;
         token.jobTitle = user.jobTitle;
         token.teamId = user.teamId;
-        token.accessToken = user.token; // ذخیره توکن دریافتی از بک‌اند
+        token.accessToken = user.token;
       }
 
-      // IF UPDATE CALL FROM CLIENT THE JWT CALLBACK IS CALL AGAIN
+      // ===== Session Update =====
       if (trigger === "update") {
-        const { data } = await api.get(`/users/${token.id}`, {
-          headers: { Authorization: `Bearer ${token.accessToken}` },
-        });
+        try {
+          console.log("JWT UPDATE START");
 
-        const dbUser = data.data.user;
+          if (!token.id) {
+            console.error("JWT UPDATE ERROR: token.id is missing");
+            return token;
+          }
 
-        token.id = dbUser.id;
-        token.name = dbUser.name;
-        token.family = dbUser.family;
-        token.role = dbUser.role;
-        token.jobTitle = dbUser.jobTitle;
-        token.teamId = dbUser.teamId;
-        token.accessToken = dbUser.token;
+          if (!token.accessToken) {
+            console.error("JWT UPDATE ERROR: accessToken is missing");
+            return token;
+          }
+
+          const { data } = await api.get(`/users/${token.id}`, {
+            headers: {
+              Authorization: `Bearer ${token.accessToken}`,
+            },
+          });
+
+          console.log("JWT UPDATE RESPONSE:", data);
+
+          const dbUser = data?.data?.user;
+
+          if (!dbUser) {
+            console.error("JWT UPDATE ERROR: user not found in response");
+            return token;
+          }
+
+          token.id = dbUser.id;
+          token.name = dbUser.name;
+          token.family = dbUser.family;
+          token.role = dbUser.role;
+          token.jobTitle = dbUser.jobTitle;
+
+          // اگر بعد از حذف تیم مقدار null شد مشکلی ندارد
+          token.teamId = dbUser.teamId ?? "";
+
+          // مهم:
+          // accessToken را از پاسخ user نخوان
+          // چون در ساختار API شما وجود ندارد.
+          // توکن قبلی را حفظ کن.
+          // token.accessToken = token.accessToken;
+
+          console.log("JWT UPDATE END");
+        } catch (error) {
+          console.error("JWT UPDATE ERROR:", error);
+
+          // جلوگیری از خراب شدن Session
+          return token;
+        }
       }
 
       return token;

@@ -3,7 +3,7 @@ import StepProgressBar from "@/components/StepProgressBar";
 import UserInfo from "@/components/UserInfo";
 import UserStatus from "@/components/UserStatus";
 import WelcomeBox from "@/components/WelcomeBox";
-import { getTeam, getUser } from "@/lib/api";
+import { getTeam, getUser, tasksAPI } from "@/lib/api";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
@@ -20,18 +20,27 @@ position: relative;
         outline: 0 solid #0000;
         outline-offset: 2px;
 */
-
+export const revalidate = 0;
 async function Page() {
   //  GET CURRENT USER
   const session = await getServerSession(authOptions);
   const user = session?.user;
   let fetchedUser: IUser | null = null;
   let team: ITeam | null = null;
+  let response;
+  let myTaskLength: number = 0;
+  // USER INFO
   if (user?.id) {
     fetchedUser = await getUser(user.id);
   }
+  // TEAM INFO
   if (user?.teamId) {
     team = await getTeam(user.teamId);
+  }
+  // TASK INFO
+  if (user?.id) {
+    response = await tasksAPI.getAllMyTasks(user.id);
+    myTaskLength = response.data.tasks.length;
   }
 
   if (user?.teamId === null || user?.teamId === "") {
@@ -59,7 +68,7 @@ async function Page() {
 
         {/* divider line*/}
         <div className="divider w-full"></div>
-        <UserStatus fetchedUser={fetchedUser} team={team} />
+        <UserStatus tasksLength={myTaskLength} team={team} />
       </div>
     );
   }

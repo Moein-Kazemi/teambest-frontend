@@ -3,14 +3,17 @@ import { ITask } from "@/interfaces/tasksInterfaces";
 import { projectsAPI, tasksAPI } from "@/lib/api";
 import TaskCard from "./TaskCard";
 
-async function TeamTaskList() {
+interface TeamTaskListProps {
+  teamId: string;
+  role: string;
+}
+
+async function TeamTaskList({ teamId, role }: TeamTaskListProps) {
   const teamTasksIds: string[] = [];
   const teamTasks: ITask[] = [];
 
   // fetch projects
-  const response = await projectsAPI.getProjectsByTeam(
-    "69df5fc47621324e98a37b93",
-  );
+  const response = await projectsAPI.getProjectsByTeam(teamId);
   const projects: IProject[] = response.data.projects;
 
   // push all temaTaskId(except my task) to the teamTasksIds array
@@ -44,7 +47,7 @@ async function TeamTaskList() {
   return (
     <ul className="space-y-4">
       {teamTasks.map((task) => (
-        <TaskCard task={task} key={task._id} />
+        <TaskCard task={task} key={task._id} role={role} />
       ))}
     </ul>
   );

@@ -1,7 +1,7 @@
 import DeleteTeamButton from "@/components/DeleteTeamButton";
 import { ITeam, ITeamProject } from "@/interfaces/teamInterfaces";
 
-import { Users } from "lucide-react";
+import { Rocket, Users } from "lucide-react";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -112,8 +112,8 @@ export default async function TeamInfoCard({ team, role }: TeamInfoCardProps) {
                     key={project.projectId}
                     className="bg-base-100 rounded-2xl border border-base-300 p-3 md:p-5 hover:shadow-lg transition-all duration-300"
                   >
-                    <h3 className="font-bold text-sm md:text-lg text-base-content">
-                      {project.projectName}
+                    <h3 className="font-bold flex gap-2 text-sm md:text-lg text-base-content">
+                      <Rocket size={16} color="green" /> {project.projectName}
                     </h3>
                   </div>
                 ))}

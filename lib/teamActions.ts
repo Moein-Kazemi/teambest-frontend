@@ -36,6 +36,10 @@ export async function createTeam(data: CreateTeamFormData): Promise<{
     // ==================== REVALIDATE ====================
 
     revalidatePath("/team");
+    revalidatePath("/dashboard");
+    revalidatePath("/projects");
+    revalidatePath("/tasks");
+    revalidatePath("/profile");
     revalidateTag(`team-${createTeamResponse.data.team._id.toString()}`);
 
     // ==================== SUCCESS ====================

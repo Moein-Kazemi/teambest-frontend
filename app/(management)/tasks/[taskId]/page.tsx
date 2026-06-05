@@ -1,10 +1,14 @@
 import { vazirMedium } from "@/app/fonts";
 import BackButtonServer from "@/components/BackButtonServer";
+import EndTaskButton from "@/components/EndTaskButton";
+import StartTaskButton from "@/components/StartTaskButton";
 import UserBox from "@/components/UserBox";
 import { IProject, IStage } from "@/interfaces/projectInterfaces";
 import { ITask } from "@/interfaces/tasksInterfaces";
-import { projectsAPI, tasksAPI } from "@/lib/api";
+import { getUser, projectsAPI, tasksAPI } from "@/lib/api";
+import { authOptions } from "@/lib/auth";
 import { Group, Newspaper } from "lucide-react";
+import { getServerSession } from "next-auth";
 
 interface PageProps {
   params: {
@@ -13,6 +17,10 @@ interface PageProps {
 }
 
 async function Page({ params }: PageProps) {
+  // session
+  const session = await getServerSession(authOptions);
+  const user = session?.user;
+
   // fetch task
   const taskId = params.taskId;
   const resTask = await tasksAPI.getTaskById(taskId);
@@ -25,6 +33,10 @@ async function Page({ params }: PageProps) {
     (stage) => stage._id === task.stageId,
   ) as IStage;
 
+  // fetch user
+  const fetchedUser = await getUser(
+    task?.assigneeTo?.assigneeId?.toString() as string,
+  );
   return (
     <div className="space-y-6">
       {/* TITLE AND BACK BUTTON */}
@@ -61,8 +73,23 @@ async function Page({ params }: PageProps) {
       {/* responsible person box */}
       <div className="card space-y-2 rounded-2xl text-center bg-gray-300 p-4">
         <h5>مسئول انجام وظیفه</h5>
-        <UserBox name={task?.assigneeTo?.assigneeName as string} />
+        <UserBox
+          name={task?.assigneeTo?.assigneeName as string}
+          userId={task.assigneeTo.assigneeId?.toString() as string}
+        />
       </div>
+      {user?.id === fetchedUser._id && (
+        <div className="flex justify-center gap-2">
+          <StartTaskButton
+            taskId={task._id as string}
+            status={task?.status as "انجام نشده" | "در حال انجام" | "انجام شده"}
+          />
+          <EndTaskButton
+            taskId={task._id as string}
+            status={task?.status as "انجام نشده" | "در حال انجام" | "انجام شده"}
+          />
+        </div>
+      )}
     </div>
   );
 }

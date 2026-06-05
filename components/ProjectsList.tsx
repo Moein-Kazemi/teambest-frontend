@@ -38,15 +38,19 @@ async function ProjectsList({ teamId, role }: ProjectsListProps) {
     <>
       <ul className="space-y-4">
         {projects.map((project) => {
-          return <ProjectCard key={project._id} project={project} />;
+          return (
+            <ProjectCard key={project._id} project={project} role={role} />
+          );
         })}
       </ul>
-      <Link
-        href="/projects/create"
-        className="text-xl block text-center mt-6 mb-4 text-primary"
-      >
-        ایجاد پروژه جدید +
-      </Link>
+      {role === "manager" && (
+        <Link
+          href="/projects/create"
+          className="text-xl block text-center mt-6 mb-4 text-primary"
+        >
+          ایجاد پروژه جدید +
+        </Link>
+      )}
     </>
   );
 }

@@ -1,6 +1,6 @@
 import { Users } from "lucide-react";
 import Image from "next/image";
-import moeinImage from "@/public/images/moein.jpg";
+
 import { IUser } from "@/interfaces/userInterfaces";
 import { ITeam } from "@/interfaces/teamInterfaces";
 

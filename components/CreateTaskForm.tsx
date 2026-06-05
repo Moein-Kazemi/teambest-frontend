@@ -10,9 +10,14 @@ import { vazirMedium } from "@/app/fonts";
 import { useRouter } from "next/navigation";
 import { createTask } from "@/lib/taskActions";
 import { toast } from "sonner";
+import { ITeam } from "@/interfaces/teamInterfaces";
+
+import { IUser } from "@/interfaces/userInterfaces";
 
 interface createTaskFormProps {
   projects: IProject[];
+  team: ITeam;
+  manager: IUser;
 }
 
 const initialFormValue: ITask = {
@@ -27,7 +32,18 @@ const initialFormValue: ITask = {
   priority: "کم",
 };
 
-function CreateTaskForm({ projects }: createTaskFormProps) {
+function CreateTaskForm({ projects, team, manager }: createTaskFormProps) {
+  console.log(team);
+  const members = [
+    ...team.members,
+    {
+      memberId: manager._id,
+      memberName: `${manager.name} ${manager.family}`,
+      memberAvatar: manager.avatar,
+      memberJobTitle: manager.role,
+    },
+  ];
+
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
   const [serverSuccess, setServerSuccess] = useState<string | null>(null);
@@ -37,6 +53,7 @@ function CreateTaskForm({ projects }: createTaskFormProps) {
     register,
     watch,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting, isValid },
   } = useForm<TaskFormData>({
     resolver: zodResolver(taskSchema),
@@ -189,53 +206,58 @@ function CreateTaskForm({ projects }: createTaskFormProps) {
         </div>
       </div>
 
-      {/* USERID AND USERNAME */}
+      {/* ASSIGNEE */}
       <div className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4">
-        {/* USER ID */}
-        <div className="form-control flex gap-2 flex-col md:col-span-1 md:flex-row  md:items-center pb-7 md:pb-0">
+        {/* assigneeId hidden */}
+        <input type="hidden" {...register("assigneeTo.assigneeId")} />
+
+        {/* assigneeName hidden */}
+        <input type="hidden" {...register("assigneeTo.assigneeName")} />
+
+        {/* Select Box */}
+        <div className="form-control md:col-span-2">
           <label className="label">
             <span className="label-text text-black">
-              شناسه مسئول <span className="text-red-600">*</span>
+              مسئول تسک <span className="text-red-600">*</span>
             </span>
           </label>
 
           <div className="relative">
-            <input
-              type="text"
-              required
-              {...register("assigneeTo.assigneeId")}
-              className="input border border-primary/20 outline-primary relative "
-              placeholder="شناسه"
-            />
-            {errors.assigneeTo?.assigneeId && (
-              <label className="label inline-block absolute -bottom-7  right-0 ">
-                <span className="label-text-alt text-error">
-                  {errors.assigneeTo.assigneeId.message}
-                </span>
-              </label>
-            )}
-          </div>
-        </div>
-        {/* USER NAME */}
-        <div className="form-control flex gap-2 flex-col md:col-span-1 md:flex-row md:items-center">
-          <label className="label">
-            <span className="label-text text-black">
-              نام مسئول <span className="text-red-600">*</span>
-            </span>
-          </label>
+            <select
+              className="select border border-primary/20 outline-primary w-full"
+              defaultValue=""
+              onChange={(e) => {
+                const selectedMember = members.find(
+                  (member) => member.memberId === e.target.value,
+                );
 
-          <div className="relative">
-            <input
-              type="text"
-              required
-              {...register("assigneeTo.assigneeName")}
-              className="input border border-primary/20 outline-primary relative "
-              placeholder="نام مسئول"
-            />
-            {errors.assigneeTo?.assigneeName && (
-              <label className="label inline-block absolute -bottom-7  right-0 ">
+                if (!selectedMember) return;
+
+                setValue("assigneeTo.assigneeId", selectedMember.memberId, {
+                  shouldValidate: true,
+                });
+
+                setValue("assigneeTo.assigneeName", selectedMember.memberName, {
+                  shouldValidate: true,
+                });
+              }}
+            >
+              <option value="" disabled>
+                انتخاب مسئول
+              </option>
+
+              {members.map((member) => (
+                <option key={member.memberId} value={member.memberId}>
+                  {member.memberName}
+                </option>
+              ))}
+            </select>
+
+            {(errors.assigneeTo?.assigneeId ||
+              errors.assigneeTo?.assigneeName) && (
+              <label className="label inline-block absolute -bottom-7 right-0">
                 <span className="label-text-alt text-error">
-                  {errors.assigneeTo.assigneeName.message}
+                  لطفاً یک مسئول انتخاب کنید
                 </span>
               </label>
             )}

@@ -11,6 +11,8 @@ export async function deleteProject(projectId: string) {
     await api.delete(`/projects/${projectId}`);
     revalidateTag("projects");
     revalidatePath("/projects");
+    revalidatePath("/team");
+    revalidatePath("/tasks");
     return { success: true };
   } catch (err) {
     if (err instanceof Error) {
@@ -74,6 +76,8 @@ export async function createProject(
 
     revalidateTag("projects");
     revalidatePath("/projects");
+    revalidatePath("/team");
+    revalidatePath("/tasks");
     return { success: true };
   } catch (err) {
     if (err instanceof Error) {

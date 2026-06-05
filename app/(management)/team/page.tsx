@@ -7,6 +7,8 @@ import TeamInfoCard from "@/ui/TeamInfoCard";
 import { getTeam } from "@/lib/api";
 // import { teamAPI } from "@/lib/apis/team.api";
 
+export const revalidate = 0; // revalidate at most
+
 export default async function Page() {
   const session = await getServerSession(authOptions);
   const user = session?.user;

@@ -208,7 +208,7 @@ export const getTeam = async (teamId: string): Promise<ITeam> => {
       return data.data.team;
     },
     [`team-${teamId}`],
-    { revalidate: 1800, tags: [`team-${teamId}`] },
+    { revalidate: 2, tags: [`team-${teamId}`] },
   )();
 };
 

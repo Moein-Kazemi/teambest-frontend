@@ -4,7 +4,12 @@ import { Play } from "lucide-react";
 
 import { toast } from "sonner";
 
-function StartTaskButton({ taskId }: { taskId: string }) {
+interface StartTaskButton {
+  taskId: string;
+  status: "انجام نشده" | "در حال انجام" | "انجام شده";
+}
+
+function StartTaskButton({ taskId, status }: StartTaskButton) {
   async function handelStart() {
     const result = await updateTask(taskId, {
       status: "در حال انجام",
@@ -18,7 +23,11 @@ function StartTaskButton({ taskId }: { taskId: string }) {
   }
 
   return (
-    <button className="btn btn-primary btn-sm" onClick={handelStart}>
+    <button
+      disabled={status === "انجام شده" || status === "در حال انجام"}
+      className="btn btn-primary btn-sm md:btn-lg"
+      onClick={handelStart}
+    >
       <Play size={16} />
       شروع
     </button>

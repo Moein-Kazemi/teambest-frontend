@@ -14,6 +14,7 @@ import {
 import StageFields from "./StageFields";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { ITeam } from "@/interfaces/teamInterfaces";
 const initialFormValue = {
   name: "",
   description: "",
@@ -26,8 +27,18 @@ const initialFormValue = {
   ],
 };
 
+interface CreateProjectFormProps {
+  teamId: string;
+  ownerId: string;
+  team: ITeam;
+}
+
 // ==================== Component ====================
-export default function CreateProjectForm() {
+export default function CreateProjectForm({
+  teamId,
+  ownerId,
+  team,
+}: CreateProjectFormProps) {
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
   const [serverSuccess, setServerSuccess] = useState<string | null>(null);
@@ -37,6 +48,7 @@ export default function CreateProjectForm() {
     register,
     control,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting, isValid },
   } = useForm<ProjectFormData>({
     resolver: zodResolver(projectSchema),
@@ -57,19 +69,19 @@ export default function CreateProjectForm() {
 
   // ADD HIDDEN IDS TO FORM
   const ids = {
-    teamId: "69df5fc47621324e98a37b93",
-    ownerId: "69df5fc47621324e98a37b37",
+    teamId,
+    ownerId,
   };
   const createProjectWithIds = createProject.bind(null, ids);
 
   const onSubmit = async (data: ProjectFormData) => {
     setServerError(null);
     setServerSuccess(null);
+    console.log(data);
 
     const formData = new FormData();
     formData.set("name", data.name);
     formData.set("description", data.description || "");
-
     formData.set("stages", JSON.stringify(data.stages));
 
     const result = await createProjectWithIds(formData);
@@ -160,6 +172,8 @@ export default function CreateProjectForm() {
           errors={errors.stages?.[stageIndex]}
           canDelete={stageFields.length > 1}
           onDelete={() => removeStage(stageIndex)}
+          members={team.members}
+          setValue={setValue}
         />
       ))}
 

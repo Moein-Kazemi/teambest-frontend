@@ -84,6 +84,7 @@ export default function CreateTeamForm({
     if (result.success) {
       await update();
       toast.success("تیم با موفقیت ایجاد شد.");
+      router.replace("/dashboard");
       router.refresh();
     } else {
       toast.error("تشکیل تیم ناموفق");

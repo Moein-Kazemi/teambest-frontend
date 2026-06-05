@@ -2,8 +2,12 @@ import { IProject } from "@/interfaces/projectInterfaces";
 import { Eye } from "lucide-react";
 import Link from "next/link";
 import DeleteProjectModal from "./DeleteProjectModal";
+interface ProjectCardProps {
+  project: IProject;
+  role: string;
+}
 
-function ProjectCard({ project }: { project: IProject }) {
+function ProjectCard({ project, role }: ProjectCardProps) {
   return (
     <li
       key={project._id}
@@ -31,7 +35,9 @@ function ProjectCard({ project }: { project: IProject }) {
 
         {/* MODAL SECTIONS */}
 
-        <DeleteProjectModal projectId={project._id?.toString() || ""} />
+        {role === "manager" && (
+          <DeleteProjectModal projectId={project._id?.toString() || ""} />
+        )}
       </div>
     </li>
   );
