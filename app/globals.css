@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+@plugin "daisyui" {
+  themes: light --default;
+}
 @theme {
   /* FONTS */
   /* --font-sans: var(--vazir-light), ui-sans-serif, system-ui, sans-serif; */
