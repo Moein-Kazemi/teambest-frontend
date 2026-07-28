@@ -3,9 +3,10 @@ interface Card3dProps {
 }
 function Card3d({ src }: Card3dProps) {
   return (
-    <div className="hover-3d col-span-12 sm:col-span-8">
-      <figure className="max-w-200 rounded-2xl">
-        <img src={`${src}`} alt="3D card" />
+    // add class hover-3d  to below element
+    <div className="col-span-12 sm:col-span-8">
+      <figure className="max-w-200 rounded-2xl overflow-hidden">
+        <img className="w-[100%]" src={`${src}`} alt="3D card" />
       </figure>
       <div></div>
       <div></div>

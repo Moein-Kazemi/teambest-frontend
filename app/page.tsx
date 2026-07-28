@@ -1,16 +1,19 @@
 import { vazirMedium } from "./fonts";
 import Link from "next/link";
-import { Check } from "lucide-react";
+import { Check, CheckSquare, FolderClosed } from "lucide-react";
 import Card3d from "@/components/Card3d";
+import FeatureBox from "@/components/FeatureBox";
 
 export default function Home() {
   return (
-    <main>
+    <main className="space-y-4 md:space-y-6">
       <section className="hero min-h-[60vh] bg-base-100">
         <div className="hero-content text-center grid grid-cols-12">
           <Card3d src="/images/consept.png" />
           <div className="max-w-2xl space-y-8  col-span-12 sm:col-span-4">
-            <h1 className={`text-3xl ${vazirMedium.className} md:text-5xl`}>
+            <h1
+              className={`text-3xl ${vazirMedium.className} md:text-4xl lg:text-5xl`}
+            >
               مدیریت تیم،
               <span className="text-primary block mt-4">بدون پیچیدگی.</span>
             </h1>
@@ -50,7 +53,28 @@ export default function Home() {
           </div>
         </div>
       </section>
-
+      <section className="space-y-3">
+        <div className="flex flex-col items-center gap-1">
+          <h2 className={`${vazirMedium.className} text-2xl md:text-3xl`}>
+            همه ابزار هایی که تیم شما نیاز دارد
+          </h2>
+          <p className="text-gray-600 text-sm md:text-lg">
+            از مدیریت تیم تا گزارش گیری همه چیز در تیم بست
+          </p>
+        </div>
+        <div className="flex gap-3">
+          <FeatureBox
+            icon={<FolderClosed color="#422ad5" />}
+            title="مدیریت پروژه"
+            description="ساخت پروژه ، تعیین مراحل ،پیگیری پیشرفت"
+          />
+          <FeatureBox
+            icon={<CheckSquare color="yellow" />}
+            title="مدیریت وظایف"
+            description="تخصیص وظایف ، اولویت بندی و مهلت زمانی"
+          />
+        </div>
+      </section>
       {/* ANOTHER SECTION OR SOME SECTIONS TO SHOW THE FEATURES OF THE APP */}
     </main>
   );
