@@ -1,21 +1,25 @@
-import { vazirMedium } from "./fonts";
+import { vazirLight, vazirMedium } from "./fonts";
 import Link from "next/link";
 import {
+  ChartColumnDecreasing,
   ChartNoAxesCombined,
   Check,
   CheckSquare,
   FolderClosed,
+  Handshake,
+  LaptopMinimalCheck,
+  ListCheck,
   MessagesSquare,
-  Terminal,
   User,
 } from "lucide-react";
 import Card3d from "@/components/Card3d";
 import FeatureBox from "@/components/FeatureBox";
 import ProccessBox from "@/components/ProcessBox";
+import Image from "next/image";
 
 export default function Home() {
   return (
-    <main className="space-y-4 md:space-y-6 max-w-7xl mx-auto">
+    <main className="space-y-4 md:space-y-7 max-w-7xl mx-auto">
       <section className="hero min-h-[60vh] bg-base-100">
         <div className="hero-content text-center grid grid-cols-12">
           <Card3d src="/images/consept.png" />
@@ -98,7 +102,7 @@ export default function Home() {
           />
         </div>
       </section>
-      <section className="space-y-3">
+      <section className="space-y-5">
         <div className="flex flex-col items-center gap-1">
           <h2 className={`${vazirMedium.className} text-2xl md:text-3xl`}>
             نحوه کار تیم بست
@@ -107,9 +111,41 @@ export default function Home() {
             در چند مرحله ساده تیم خود را مدیریت کنید.
           </p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex justify-center flex-wrap gap-10">
           <ProccessBox step={1} title="ایجاد تیم" icon={<User />} />
-          <ProccessBox step={2} title="اضافه کردن اعضا" icon={<Terminal />} />
+          <ProccessBox step={2} title="اضافه کردن اعضا" icon={<Handshake />} />
+          <ProccessBox
+            step={3}
+            title="ایجاد پروژه"
+            icon={<LaptopMinimalCheck />}
+          />
+          <ProccessBox step={4} title="مدیریت وظایف" icon={<ListCheck />} />
+          <ProccessBox
+            step={5}
+            lastChild={true}
+            title="گزارش نهایی"
+            icon={<ChartColumnDecreasing />}
+          />
+        </div>
+      </section>
+      <section className="mt-10">
+        <div className="w-[80%] max-w-150 relative h-1/5 max-h-70 aspect-video rounded-2xl overflow-hidden mx-auto mb-5">
+          <Image src="/images/tower.jpg" alt="tower picture" fill />
+          <div className="absolute top-0 bottom-0 right-0 left-0 bg-[#7171fe4a]"></div>
+          <div
+            className={`${vazirMedium.className} text-sm sm:text-lg md:text-2xl absolute left-[10%] top-[25%]`}
+          >
+            آیا آماده اید تیم خود را متحول کنید؟
+            <div className={`${vazirLight.className} text-sm`}>
+              همین الان رایگان شروع کنید
+            </div>
+            <Link
+              href="/dashboard"
+              className="btn btn-outline btn-primary mt-2 btn-sm md:btn-md"
+            >
+              شروع
+            </Link>
+          </div>
         </div>
       </section>
       {/* ANOTHER SECTION OR SOME SECTIONS TO SHOW THE FEATURES OF THE APP */}
